@@ -1,0 +1,272 @@
+import React, { Component } from "react";
+import { Link, Route, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import {
+  GetactSaveID,
+  GetactProductCategory,
+  GetactLogoutUsers,
+  GetactGetToCart,
+} from "../../actions/index";
+const menus = [
+  {
+    name: "Home",
+    to: "/",
+    exact: true,
+  },
+  {
+    name: "Shop",
+    to: "/category",
+    exact: false,
+  },
+  {
+    name: "Blog",
+    to: "/blog",
+    exact: true,
+  },
+  {
+    name: "Pages",
+    to: "/pages",
+    exact: false,
+  },
+  {
+    name: "Contact",
+    to: "/contact",
+    exact: false,
+  },
+];
+class HeaderEX extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      products: [],
+      check:false
+    };
+  }
+  componentWillMount() {
+    var token = localStorage.getItem("token");
+     console.log(token);
+    if (token ) {
+      var data = JSON.parse(token);
+      var config = {
+        headers: { Authorization: `Bearer ${data.token}` },
+      };
+      this.props.actGetToCart(config);
+     }
+     if(this.props.logout){
+       console.log(this.props.logout.status==200)
+       this.setState({
+         check:true
+       })
+     }
+  }
+  componentWillReceiveProps(nextProps){
+      if(nextProps.logout){
+        this.setState({
+          check:true
+        })
+      }
+      console.log(nextProps.logout)
+  }
+  LogoutUsers = (config) => {
+    this.props.actLogoutUsers(config);
+    localStorage.removeItem("CART");
+  };
+  ShowMenuLogin = (user) => {
+    console.log(this.props.login);
+    var token = localStorage.getItem("token");
+    if (token) {
+      var data = JSON.parse(token);
+      var config = {
+        headers: { Authorization: `Bearer ${data.token}` },
+      };
+    }
+    // console.log(config);
+    if (token) {
+      return (
+        <li className="nav-item submenu dropdown">
+          <Link
+            to="/pages"
+            className="nav-link dropdown-toggle"
+            data-toggle="dropdown"
+            role="button"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            {data.user.name}
+          </Link>
+          <ul className="dropdown-menu">
+            <li className="nav-item">
+              <Link to="/profile" className="nav-link">
+                Đổi mật khẩu
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/signup" className="nav-link">
+                Thông tin cá nhân
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                to="/cart"
+                className="nav-link"
+              >
+                Giỏ hàng
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                to="/"
+                onClick={() => this.LogoutUsers(config)}
+                className="nav-link"
+              >
+                Thoát
+              </Link>
+            </li>
+          </ul>
+        </li>
+      );
+    } else {
+      return (
+        <li className="nav-item submenu dropdown">
+          <Link
+            to="/pages"
+            className="nav-link dropdown-toggle"
+            data-toggle="dropdown"
+            role="button"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Tài khoản
+          </Link>
+          <ul className="dropdown-menu">
+            <li className="nav-item">
+              <Link to="/login" className="nav-link" href="login.html">
+                Đăng nhập
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/signup" className="nav-link" href="tracking.html">
+                Tạo tài khoản
+              </Link>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="elements.html">
+                Đăng nhập Google
+              </a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="elements.html">
+                Đăng nhập Facebook
+              </a>
+            </li>
+          </ul>
+        </li>
+      );
+    }
+  };
+  componentDidMount() {
+    this.props.actSaveID();
+    
+  }
+  
+  render() {
+    var { login } = this.props;
+    var {logout}=this.props;
+    if(logout.status==200){
+      window.location.reload();
+    }
+   
+    
+    return (
+      <header class="header_area sticky-header">
+      <div class="main_menu">
+        <nav class="navbar navbar-expand-lg navbar-light main_box">
+          <div class="container">
+
+            <a class="navbar-brand logo_h" href="index.html"><img src="" alt=""/></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+    
+            <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+              <ul class="nav navbar-nav menu_nav ml-auto">
+                <li class="nav-item active"><a class="nav-link" href="index.html">Home</a></li>
+                <li class="nav-item submenu dropdown">
+                  <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                   aria-expanded="false">Shop</a>
+                  <ul class="dropdown-menu">
+                    <li class="nav-item"><a class="nav-link" href="category.html">Shop Category</a></li>
+                    <li class="nav-item"><a class="nav-link" href="single-product.html">Product Details</a></li>
+                    <li class="nav-item"><a class="nav-link" href="checkout.html">Product Checkout</a></li>
+                    <li class="nav-item"><a class="nav-link" href="cart.html">Shopping Cart</a></li>
+                    <li class="nav-item"><a class="nav-link" href="confirmation.html">Confirmation</a></li>
+                  </ul>
+                </li>
+                <li class="nav-item submenu dropdown">
+                  <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                   aria-expanded="false">Blog</a>
+                  <ul class="dropdown-menu">
+                    <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
+                    <li class="nav-item"><a class="nav-link" href="single-blog.html">Blog Details</a></li>
+                  </ul>
+                </li>
+                <li class="nav-item submenu dropdown">
+                  <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                   aria-expanded="false">Pages</a>
+                  <ul class="dropdown-menu">
+                    <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="tracking.html">Tracking</a></li>
+                    <li class="nav-item"><a class="nav-link" href="elements.html">Elements</a></li>
+                  </ul>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+              </ul>
+              <ul class="nav navbar-nav navbar-right">
+                <li class="nav-item"><a href="#" class="cart"><span class="ti-bag"></span></a></li>
+                <li class="nav-item">
+                  <button class="search"><span class="lnr lnr-magnifier" id="search"></span></button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </div>
+      <div class="search_input" id="search_input_box">
+        <div class="container">
+          <form class="d-flex justify-content-between">
+            <input type="text" class="form-control" id="search_input" placeholder="Search Here"/>
+            <button type="submit" class="btn"></button>
+            <span class="lnr lnr-cross" id="close_search" title="Close Search"></span>
+          </form>
+        </div>
+      </div>
+    </header>
+    );
+  }
+}
+
+const mapStateToProps = (state) => {
+  return {
+    saveid: state.saveid,
+    login: state.login,
+    logout:state.logout
+  };
+};
+const mapDispatchToProps = (dispatch, props) => {
+  return {
+    actSaveID: () => {
+      dispatch(GetactSaveID());
+    },
+    actLogoutUsers: (config) => {
+      dispatch(GetactLogoutUsers(config));
+    },
+    actGetToCart: (config) => {
+      dispatch(GetactGetToCart(config));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(HeaderEX);
