@@ -6,9 +6,9 @@ const signup = (state = initialState, action) => {
   switch (action.type) {
     case types.SIGNUP:
       state = action.data_signup;
-      return {...state};
+      return state;
     default:
-      return {...state};
+      return state;
   }
 };
 

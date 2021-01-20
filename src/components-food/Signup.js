@@ -24,12 +24,12 @@ class Signup extends Component {
     console.log(nextProps.productcategory);
   }
   componentWillReceiveProps(nextProps){
-      console.log(nextProps.signup);
-    // if(nextProps.signup[0]=="5"){
-    //     this.setState({
-    //       success:"Email đã có người sử dụng"
-    //     })
-    // }
+      console.log(nextProps.signup=="null");
+    if(nextProps.signup=="null"){
+        this.setState({
+          success:"Email đã có người sử dụng"
+        })
+    }
     if(nextProps.signup.data)
     {
       this.setState({
@@ -112,14 +112,12 @@ class Signup extends Component {
     var {username,email,password}=this.state;
     console.log(this.state.username);
     e.preventDefault();
-    this.props.actSignUpUsers(username,email,password)
-    // if (this.handleValidation()) {
-    //   alert("Form submitted");
-    //   this.props.actSignUpUsers(username,email,password)
-    //   console.log(username);
-    // } else {
-    //   alert("Form has errors.");
-    // }
+    if (this.handleValidation()) {
+      this.props.actSignUpUsers(username,email,password)
+      console.log(username);
+    } else {
+      alert("Form has errors.");
+    }
   };
   render() {
     // var token=localStorage.getItem("token");
@@ -134,10 +132,10 @@ class Signup extends Component {
     // />}
 
     return (
-      
+      <div class="container">
       <div class="col-lg-6">
               <div class="login_form_inner">
-                <h3>Log in to enter</h3>
+                <h3>Đăng kí</h3>
                 <form
                   onSubmit={this.onSave}
                   class="row login_form"
@@ -217,10 +215,14 @@ class Signup extends Component {
 
                   <div class="col-md-12 form-group">
                     <button type="submit" value="submit" class="primary-btn">
-                      Sign In
+                      Sign Up
                     </button>
+                    <Link to="/login" class="login"><button type="button" value="button" class="primary-btn">
+                      Sign In
+                    </button></Link>
                   </div>
                 </form>
+                </div>
                 </div>
                 </div>
     );
@@ -229,8 +231,6 @@ class Signup extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    saveid: state.saveid,
-    productcategory: state.productcategory,
     signup:state.signup
   };
 };
@@ -239,15 +239,6 @@ const mapDispatchToProps = (dispatch, props) => {
     actSignUpUsers: (name,email,password) => {
       dispatch(GetactSignUpUsers(name,email,password));
     },
-    // actProductCategory: (user) => {
-    //   dispatch(GetactProductCategory(user));
-    // },
-    // actSaveID: () => {
-    //   dispatch(GetactSaveID());
-    // },
-    // actProductCategory: (id) => {
-    //   dispatch(GetactProductCategory(id));
-    // },
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Signup);

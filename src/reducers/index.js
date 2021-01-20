@@ -1,19 +1,10 @@
 import {combineReducers} from 'redux';
-import login from './login';
-import saveid from './saveid';
-import productcategory from './productcategory';
-import productdetail from './productdetail';
 import signup from './signup';
-import cart from './cart'
-import logout from './logout'
+import login from './login';
+
 const myReducer=combineReducers({
-    logout,
-    cart,
     signup,
-    login,
-    saveid,
-    productcategory,
-    productdetail
+    login
 }); 
 
 export default myReducer;

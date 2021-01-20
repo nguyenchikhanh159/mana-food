@@ -95,32 +95,34 @@ class Login extends Component {
     // />}
 
     return (
+      <div class="container">
+        <div class="col-lg-6">
       <div className="Login">
-        <form action="/action_page.php" method="post">
+        <form >
           <div class="imgcontainer">
             <img src="img/abc.jpg" alt="Avatar" class="avatar" />
           </div>
 
           <div class="container">
-            <label for="uname"><b>Username</b></label>
+            <label for="username"><b>Username</b></label>
             <input type="text" placeholder="Enter Username" name="uname" required />
 
             <label for="psw"><b>Password</b></label>
             <input type="password" placeholder="Enter Password" name="psw" required />
 
-            <button type="submit">Login</button>
+            <button type="button">Sign In</button>
+            <Link to="/signup"><button type="submit">Sign Up</button></Link>
             <label>
               <input type="checkbox" checked="checked" name="remember" /> Lưu tài khoản
     </label>
-          </div>
-
-          <div class="container" style={{backgroundColor:"#f1f1f1"}}>
-            <button type="button" class="cancelbtn">Cancel</button>
+    <div class="container" style={{backgroundColor:"#f1f1f1"}}>
             <span class="psw">Quên <a href="#">password?</a></span>
           </div>
+          </div>
+          
         </form>
-
-
+        </div>
+      </div>
       </div>
     );
   }
